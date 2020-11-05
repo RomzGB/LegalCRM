@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous">
+</script>
+<script src="functions.js"></script>
+<script src="../../functions.js"></script>
+    <title>Law Clients CRM welcome!</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1><span class="fa fa-lock" id="welcome"></span> !ברוך הבא למערכת ניהול חוזים</h1>
+        <input id="addClientName" type="text" placeholder="הקלד שם לקוח חדש" style="text-align:center;">
+        <button id="addClientButton">הוסף לקוח חדש</button>
+        <br>
+        <div id="crmDIV">
+            <ul id="clientList"></ul>
+        </div>
+        <p>Login or Register with:</p>
+
+        <a href="/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+
+    </div>
+
+</div>
+</body>
+<script>
+    $(document).ready(
+        function(){
+        $("#addClientButton").click(function(){
+        addClient()})
+
+    $.post('/displayClients', {}, (data)=>{
+        data.forEach((element, index) => {
+            let trimmedClientName = element.name.replace(/\s/g,'')
+                var clientName = $("<button/>", {
+                    id: trimmedClientName,
+                    click: function(){displayContracts(element.name)},
+                    text: element.name
+                })
+                var clientDiv = $("<div/>", {
+                id: `divOf${trimmedClientName}`,
+                })
+                $("#clientList").append(clientName, clientDiv, "<br>")
+            });
+    })})
+
+
+
+    //openingTag + id + onclick + ">" + textNode + closingTag
+</script>
+</html>
